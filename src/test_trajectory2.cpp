@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
   bool success =
       (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
 
-  if (success == moveit::planning_interface::MoveItErrorCode::SUCCESS) {
+  if (success == moveit::core::MoveItErrorCode::SUCCESS) {
     RCLCPP_INFO(LOGGER, "Moved to End Effector pose successfully.");
   } else {
     RCLCPP_ERROR(LOGGER, "Failed to move to End Effector pose.");

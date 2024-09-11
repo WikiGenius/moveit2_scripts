@@ -53,7 +53,7 @@ int main(int argc, char **argv) {
 
   // Execute the trajectory
   if (move_group.move() ==
-      moveit::planning_interface::MoveItErrorCode::SUCCESS) {
+      moveit::core::MoveItErrorCode::SUCCESS) {
     RCLCPP_INFO(LOGGER, "Moved to home position executed successfully.");
   } else {
     RCLCPP_ERROR(LOGGER, "Failed to execute home position.");
@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
 
   // Execute the trajectory
   if (move_group.move() ==
-      moveit::planning_interface::MoveItErrorCode::SUCCESS) {
+      moveit::core::MoveItErrorCode::SUCCESS) {
     RCLCPP_INFO(LOGGER, "Moved to home position executed successfully.");
   } else {
     RCLCPP_ERROR(LOGGER, "Failed to execute home position.");

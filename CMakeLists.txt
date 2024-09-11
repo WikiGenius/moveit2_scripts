@@ -19,6 +19,7 @@ find_package(moveit_msgs REQUIRED)
 
 # Create the library from approach_and_retreat_node.cpp
 add_library(approach_and_retreat_lib SHARED src/approach_and_retreat_node.cpp)
+add_library(draw_x_lib SHARED src/draw_x_node.cpp)
 
 # Generate the executable
 add_executable(test_trajectory
@@ -31,6 +32,8 @@ add_executable(test_gripper
   src/test_gripper.cpp)
 add_executable(approach_retreat
   src/approach_retreat.cpp)
+add_executable(draw_x
+  src/draw_x.cpp)
 
 target_include_directories(test_trajectory
   PUBLIC)
@@ -51,6 +54,15 @@ target_include_directories(approach_retreat PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
+target_include_directories(draw_x_lib PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+# Specify include directories for the executable
+target_include_directories(draw_x PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
 
 
 ament_target_dependencies(test_trajectory
@@ -100,8 +112,18 @@ ament_target_dependencies(approach_and_retreat_lib
   moveit_ros_planning
   control_msgs)
 
+ament_target_dependencies(draw_x_lib
+  ament_cmake
+  rclcpp
+  rclcpp_action
+  moveit_core
+  moveit_ros_planning_interface
+  interactive_markers
+  moveit_ros_planning
+  control_msgs)
 # Link the approach_retreat_node executable with the approach_and_retreat_node library
 target_link_libraries(approach_retreat approach_and_retreat_lib)
+target_link_libraries(draw_x draw_x_lib)
 
 
 # Install the library
@@ -112,6 +134,12 @@ install(TARGETS approach_and_retreat_lib
   RUNTIME DESTINATION bin
   INCLUDES DESTINATION)
 
+install(TARGETS draw_x_lib
+  EXPORT export_${PROJECT_NAME}
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  RUNTIME DESTINATION bin
+  INCLUDES DESTINATION)
 # Install the executable
 install(TARGETS
   test_trajectory
@@ -119,8 +147,10 @@ install(TARGETS
   test_trajectory3
   test_gripper
   approach_retreat
+  draw_x
   DESTINATION lib/${PROJECT_NAME}
 )
+
 # Install header files
 install(DIRECTORY include/
   DESTINATION include/${PROJECT_NAME}
